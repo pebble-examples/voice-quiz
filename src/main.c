@@ -107,6 +107,11 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(s_prompt_layer, GTextAlignmentCenter);
   text_layer_set_background_color(s_prompt_layer, GColorClear);
   layer_add_child(window_layer, text_layer_get_layer(s_prompt_layer));
+
+#if defined(PBL_ROUND)
+  text_layer_enable_screen_text_flow_and_paging(s_question_layer, 3);
+  text_layer_enable_screen_text_flow_and_paging(s_prompt_layer, 3);
+#endif
 }
 
 static void window_unload(Window *window) {

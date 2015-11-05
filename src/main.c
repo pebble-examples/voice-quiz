@@ -36,7 +36,7 @@ static void next_question_handler(void *context) {
     text_layer_set_text(s_question_layer, "Quiz Finished!");
 
     static char s_result_buff[32];
-    snprintf(s_result_buff, sizeof(s_result_buff), "You got %d of %d correct!", 
+    snprintf(s_result_buff, sizeof(s_result_buff), "You got %d of %d correct!",
              s_correct_answers, NUM_QUESTIONS);
     text_layer_set_text(s_prompt_layer, s_result_buff);
   } else {
@@ -53,7 +53,7 @@ static void check_answer(char *answer) {
 
   correct ? vibes_double_pulse() : vibes_long_pulse();
   text_layer_set_text(s_question_layer, correct ? "Correct!" : "Wrong!");
-  text_layer_set_text(s_prompt_layer, (s_current_question == NUM_QUESTIONS - 1) 
+  text_layer_set_text(s_prompt_layer, (s_current_question == NUM_QUESTIONS - 1)
                       ? "" : "Here comes the next question...");
   window_set_background_color(s_main_window, correct ? GColorGreen : GColorRed);
   s_correct_answers += correct ? 1 : 0;
@@ -65,7 +65,7 @@ static void check_answer(char *answer) {
 
 /******************************* Dictation API ********************************/
 
-static void dictation_session_callback(DictationSession *session, DictationSessionStatus status, 
+static void dictation_session_callback(DictationSession *session, DictationSessionStatus status,
                                        char *transcription, void *context) {
   if(status == DictationSessionStatusSuccess) {
     // Check this answer
@@ -109,8 +109,10 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_prompt_layer));
 
 #if defined(PBL_ROUND)
-  text_layer_enable_screen_text_flow_and_paging(s_question_layer, 3);
-  text_layer_enable_screen_text_flow_and_paging(s_prompt_layer, 3);
+  const uint8_t inset = 3;
+
+  text_layer_enable_screen_text_flow_and_paging(s_question_layer, inset);
+  text_layer_enable_screen_text_flow_and_paging(s_prompt_layer, inset);
 #endif
 }
 
@@ -129,7 +131,7 @@ static void init() {
   window_stack_push(s_main_window, true);
 
   // Create new dictation session
-  s_dictation_session = dictation_session_create(sizeof(s_last_text), 
+  s_dictation_session = dictation_session_create(sizeof(s_last_text),
                                                  dictation_session_callback, NULL);
 
   window_set_background_color(s_main_window, GColorDarkGray);
